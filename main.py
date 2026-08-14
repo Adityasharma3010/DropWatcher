@@ -1,3 +1,4 @@
+import os
 import webview
 from api import Api
 from local_server import start_in_background
@@ -12,6 +13,10 @@ if __name__ == "__main__":
     # shown -- same WebView2 profile, so it sees the same cookies.
     cookie_window = webview.create_window("", "https://www.twitch.tv/", hidden=True)
     api.set_cookie_window(cookie_window)
+    # Without this, closing the main window only destroys that one window --
+    # the hidden cookie window keeps the whole process (and any playing
+    # stream) running invisibly in the background. Force a full exit instead.
+    main_window.events.closed += lambda: os._exit(0)
     # WebView2 (Edge) backend -> real DRM/Widevine support, unlike Qt's
     # bundled Chromium, and this now owns the app's one and only GUI thread.
     # private_mode=False keeps cookies persistent across runs -- required so
