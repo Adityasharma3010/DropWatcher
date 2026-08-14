@@ -1,0 +1,5 @@
+requests>=2.32.0
+cryptography>=43.0.0
+winotify>=1.1.0
+pywebview>=5.0
+bottle>=0.13.0

@@ -1,0 +1,101 @@
+726 INFO: PyInstaller: 6.22.0, contrib hooks: 2026.6
+817 INFO: Python: 3.14.7
+936 INFO: Platform: Windows-11-10.0.26200-SP0
+960 INFO: Python environment: C:\Users\Hp\AppData\Local\Python\pythoncore-3.14-64
+993 INFO: wrote D:\Javascript\Projects\DropWatcher\Drop Watcher.spec
+1033 INFO: Module search paths (PYTHONPATH):
+['D:\\Javascript\\Projects\\DropWatcher',
+ 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\python314.zip',
+ 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\DLLs',
+ 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib',
+ 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64',
+ 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages',
+ 'D:\\Javascript\\Projects\\DropWatcher']
+2561 INFO: checking Analysis
+2563 INFO: Building Analysis because Analysis-00.toc is non existent
+2564 INFO: Looking for Python shared library...
+2565 INFO: Using Python shared library: C:\Users\Hp\AppData\Local\Python\pythoncore-3.14-64\python314.dll
+2566 INFO: Running Analysis Analysis-00.toc
+2567 INFO: Target bytecode optimization level: 0
+2568 INFO: Initializing module dependency graph...
+2577 INFO: Initializing module graph hook caches...
+2651 INFO: Analyzing modules for base_library.zip ...
+10558 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+12667 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+13866 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+14609 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+14739 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+26954 INFO: Caching module dependency graph...
+27102 INFO: Analyzing D:\Javascript\Projects\DropWatcher\main.py
+27718 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+27961 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+27985 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+28042 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+28884 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+30533 INFO: Processing standard module hook 'hook-PySide6.QtNetwork.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+45099 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+61093 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+78884 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+164240 INFO: Processing standard module hook 'hook-PySide6.QtWebEngineWidgets.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+166684 INFO: Processing standard module hook 'hook-PySide6.QtPrintSupport.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+169077 INFO: Processing standard module hook 'hook-PySide6.QtWebEngineCore.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+174080 INFO: Processing standard module hook 'hook-PySide6.QtWebChannel.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+176483 INFO: Processing standard module hook 'hook-urllib3.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+176974 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+176981 INFO: SetuptoolsInfo: initializing cached setuptools info...
+179525 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+179552 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+179767 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+179793 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+179969 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+179972 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+180036 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+180038 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+180842 INFO: Processing standard module hook 'hook-_osx_support.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+180863 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+180921 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+182413 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+182419 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+184926 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+184928 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+187236 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+187239 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+189073 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+189306 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+190046 INFO: Processing standard module hook 'hook-cryptography.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+194539 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+196914 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+197300 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+198411 INFO: Processing module hooks (post-graph stage)...
+198768 INFO: Processing standard module hook 'hook-PySide6.QtPositioning.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+203503 INFO: Processing standard module hook 'hook-PySide6.QtQuick.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+220145 INFO: Processing standard module hook 'hook-PySide6.QtOpenGL.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+230084 INFO: Processing standard module hook 'hook-PySide6.QtQml.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+241917 WARNING: QtLibraryInfo(PySide6): QML plugin binary 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PySide6\\qml\\Qt\\labs\\assetdownloader\\qmlassetdownloaderprivateplugin.dll' does not exist!
+307932 INFO: Processing standard module hook 'hook-PySide6.QtQuickWidgets.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+312316 INFO: Performing binary vs. data reclassification (2786 entries)
+314140 INFO: Looking for ctypes DLLs
+314255 INFO: Analyzing run-time hooks ...
+314267 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+314295 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+314326 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+314348 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+314367 INFO: Including run-time hook 'pyi_rth_cryptography_openssl.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+314375 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+314390 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+314409 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+314636 INFO: Creating base_library.zip...
+314759 INFO: Looking for dynamic libraries
+317288 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\shiboken6']
+317289 INFO: Extra DLL search directories (PATH): ['C:\\Users\\Hp\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PySide6']
+330248 INFO: Warnings written to D:\Javascript\Projects\DropWatcher\build\Drop Watcher\warn-Drop Watcher.txt
+330401 INFO: Graph cross-reference written to D:\Javascript\Projects\DropWatcher\build\Drop Watcher\xref-Drop Watcher.html
+330819 INFO: checking PYZ
+330900 INFO: checking PKG
+330904 INFO: Bootloader C:\Users\Hp\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+330905 INFO: checking EXE
+330983 INFO: checking COLLECT
+331168 INFO: Removing dir D:\Javascript\Projects\DropWatcher\dist\Drop Watcher
+335533 INFO: Building COLLECT COLLECT-00.toc
+357001 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+357404 INFO: Build complete! The results are available in: D:\Javascript\Projects\DropWatcher\dist
