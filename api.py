@@ -1,6 +1,7 @@
 """Bridge exposed to the web UI via pywebview's js_api. Each public method
 here is callable from JavaScript as `window.pywebview.api.<method>(...)`."""
 from __future__ import annotations
+import threading
 import time
 
 import webview
@@ -27,12 +28,32 @@ class Api:
         self._last_drops_error: str | None = None
         self._main_window = None
         self._cookie_window = None
+        self._auto_relink_in_progress = False
+        threading.Thread(target=self._auto_relink_loop, daemon=True).start()
 
     def set_window(self, window) -> None:
         self._main_window = window
 
     def set_cookie_window(self, window) -> None:
         self._cookie_window = window
+
+    def _auto_relink_loop(self) -> None:
+        """Implicit-grant tokens have no refresh_token, so they can't be
+        silently refreshed the normal way -- instead, a few minutes before
+        expiry, re-run the OAuth flow itself. Twitch skips the consent
+        screen on a repeat authorization (as long as you're still logged
+        into Twitch in your browser), so this just briefly opens/closes a
+        browser tab on its own instead of waiting for you to notice
+        "Not linked" and click Link Twitch again mid-session."""
+        while True:
+            time.sleep(60)
+            token = self.auth.token
+            if not token or self._auto_relink_in_progress:
+                continue
+            remaining = token.get("saved_at", 0) + token.get("expires_in", 0) - time.time()
+            if remaining < 300:
+                self._auto_relink_in_progress = True
+                self.auth.begin_login(lambda error: setattr(self, "_auto_relink_in_progress", False))
 
     def _get_player_session_token(self) -> str | None:
         """Reads the real 'auth-token' cookie from the shared WebView2
