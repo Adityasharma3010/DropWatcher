@@ -53,7 +53,10 @@ class Api:
             remaining = token.get("saved_at", 0) + token.get("expires_in", 0) - time.time()
             if remaining < 300:
                 self._auto_relink_in_progress = True
-                self.auth.begin_login(lambda error: setattr(self, "_auto_relink_in_progress", False))
+                self.auth.begin_login(
+                    lambda error: setattr(self, "_auto_relink_in_progress", False),
+                    window=self._cookie_window,
+                )
 
     def _get_player_session_token(self) -> str | None:
         """Reads the real 'auth-token' cookie from the shared WebView2

@@ -5,7 +5,7 @@
 ; dist\Drop Watcher\ exists, THEN compile this script.
 
 #define MyAppName "Drop Watcher"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1.1"
 #define MyAppPublisher "Aditya Sharma"
 #define MyAppExeName "Drop Watcher.exe"
 

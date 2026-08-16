@@ -48,7 +48,7 @@ class TwitchAuth:
         if not response.ok:
             self.store.clear(); self.token = None; raise AuthError("Token refresh failed; link Twitch again.")
         self.token = response.json(); self.store.save(self.token)
-    def begin_login(self, callback):
+    def begin_login(self, callback, window=None):
         state = secrets.token_urlsafe(24)
         # Implicit grant: Twitch returns the access token directly in the redirect
         # URL's fragment (#access_token=...). Fragments are never sent to a server
@@ -76,9 +76,22 @@ else { document.body.innerText = "No token received."; }
             try:
                 server = HTTPServer(("localhost", 3000), Handler)
                 params = {"client_id": TWITCH_CLIENT_ID, "redirect_uri": TWITCH_REDIRECT_URI, "response_type": "token", "scope": " ".join(SCOPES), "state": state}
-                webbrowser.open("https://id.twitch.tv/oauth2/authorize?" + urlencode(params)); server.timeout = 180
+                authorize_url = "https://id.twitch.tv/oauth2/authorize?" + urlencode(params)
+                if window is not None:
+                    # Silent path: navigate the app's own hidden, already
+                    # signed-in window. Twitch skips the consent screen for
+                    # a repeat authorization, so nothing is ever shown to
+                    # the person -- no system browser tab, no popup.
+                    window.load_url(authorize_url)
+                else:
+                    webbrowser.open(authorize_url)
+                server.timeout = 180
                 while not hasattr(server, "result"): server.handle_request()
                 result = server.result
+                if window is not None:
+                    # Return the hidden window to its resting page so cookie
+                    # reads for drop tracking keep working normally.
+                    window.load_url("https://www.twitch.tv/")
                 if result.get("state") != state or "access_token" not in result:
                     raise AuthError(f"Twitch sign-in was cancelled or returned an error: {result}")
                 # Implicit grant tokens don't come with a refresh_token or a real
