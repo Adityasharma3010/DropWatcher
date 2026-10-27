@@ -6,9 +6,11 @@ import time
 
 import webview
 from auth import TwitchAuth
+import drops_history
 from drops_tracker import DropsTracker
 from notifications import notify
 from queue_manager import QueueManager
+import settings
 from twitch_api import TwitchAPI
 
 
@@ -101,6 +103,18 @@ class Api:
         browser, so drops won't count as watched until you log in here)."""
         webview.create_window("Sign in to Twitch", "https://www.twitch.tv/login", width=480, height=680)
 
+    def minimize_to_tray(self) -> None:
+        if self._main_window:
+            self._main_window.hide()
+
+    def get_settings(self) -> dict:
+        return settings.load()
+
+    def set_setting(self, key: str, value) -> None:
+        current = settings.load()
+        current[key] = value
+        settings.save(current)
+
     # --- queue ------------------------------------------------------------
     def add_stream(self, url: str, minutes: int) -> None:
         self.manager.add(url, int(minutes))
@@ -108,9 +122,16 @@ class Api:
     def remove_stream(self, index: int) -> None:
         self.manager.remove(int(index))
 
+    def reorder_stream(self, from_index: int, to_index: int) -> None:
+        self.manager.move(int(from_index), int(to_index))
+
+    def edit_stream(self, index: int, minutes: int) -> None:
+        self.manager.edit(int(index), int(minutes))
+
     def play_stream(self, index: int) -> None:
         if 0 <= index < len(self.manager.items):
             self._manual_channel = self.twitch.channel_login(self.manager.items[index].link)
+            self._last_progress_poll = 0
 
     def toggle_queue(self) -> None:
         if self.manager.running:
@@ -121,6 +142,7 @@ class Api:
             self._manual_channel = None
             self._auto_advanced_for_index = -1
             self._all_earned_notified_for_index = -1
+            self._last_progress_poll = 0
             self.manager.start()
 
     def confirm_drops(self) -> None:
@@ -135,6 +157,22 @@ class Api:
 
     def open_inventory(self) -> None:
         self.drops.open_inventory()
+
+    def get_drops_history(self) -> list[dict]:
+        return sorted(drops_history.load(), key=lambda e: e["earned_at"], reverse=True)
+
+    def find_drop_streams(self, game_name: str) -> dict:
+        try:
+            game = self.twitch.find_game(game_name)
+            if not game:
+                return {"error": f"No category found matching '{game_name}'.", "streams": []}
+            streams = self.twitch.streams_with_drops(game["id"])
+            return {"game": game["name"], "streams": streams}
+        except Exception as exc:
+            return {"error": str(exc), "streams": []}
+
+    def add_found_stream(self, login: str, minutes: int) -> None:
+        self.manager.add(f"https://www.twitch.tv/{login}", int(minutes))
 
     def get_drops_error(self) -> str | None:
         return self._last_drops_error
@@ -162,12 +200,20 @@ class Api:
             just_earned = newly_earned_ids - self._earned_ids
             for drop_id in just_earned:
                 self._earned_at[drop_id] = now
-            if self._earned_ids:  # skip notifying on the very first poll
+            if self._earned_ids:  # skip notifying/logging on the very first poll
+                history_entries = []
                 for campaign in campaigns:
                     for drop in campaign["drops"]:
                         if drop["id"] in just_earned:
                             extra = "" if drop["claimed"] else " (claim it on Twitch if not auto-claimed)"
                             notify("Drop earned!", f"{drop['name']} ({campaign['name']}) is complete.{extra}")
+                            history_entries.append({
+                                "drop_name": drop["name"],
+                                "campaign_name": campaign["name"],
+                                "game": campaign["game"],
+                                "earned_at": now,
+                            })
+                drops_history.append(history_entries)
             self._earned_ids = newly_earned_ids
 
             current_game = None

@@ -11,6 +11,16 @@
       <h1>DROP WATCHER</h1>
       <div class="account">
         <span id="account-status">Not linked</span>
+        <div class="settings-wrap">
+          <button id="settings-btn" title="Settings">⚙</button>
+          <div id="settings-panel" class="settings-panel hidden">
+            <label class="settings-row">
+              <input type="checkbox" id="minimize-tray-setting" />
+              Minimize to tray instead of taskbar
+            </label>
+          </div>
+        </div>
+        <button id="minimize-tray-btn">Minimize to tray</button>
         <button id="unlink-btn">Unlink</button>
         <button id="link-btn" class="primary">Link Twitch</button>
       </div>
@@ -19,6 +29,14 @@
     <main>
       <section class="left">
         <h2>Stream queue</h2>
+        <div class="card">
+          <div class="label" style="color:#a8a8b3;font-size:11px;font-weight:700;">FIND STREAMS WITH DROPS</div>
+          <div class="add-row" style="margin-top:6px;">
+            <input id="game-search-input" type="text" placeholder="Game name, e.g. Grand Theft Auto V" />
+            <button id="game-search-btn">Search</button>
+          </div>
+          <div id="game-search-results" class="found-list"></div>
+        </div>
         <div class="card add-row">
           <input id="url-input" type="text" placeholder="https://twitch.tv/channel" />
           <select id="mode-select">
@@ -58,6 +76,10 @@
         <div class="card">
           <div class="label" style="color:#a8a8b3;font-size:11px;font-weight:700;">DROP PROGRESS</div>
           <div id="drops-list" class="drops-list"></div>
+        </div>
+        <div class="card">
+          <div class="label" style="color:#a8a8b3;font-size:11px;font-weight:700;">DROP HISTORY</div>
+          <div id="drops-history-list" class="drops-list"></div>
         </div>
       </section>
     </main>

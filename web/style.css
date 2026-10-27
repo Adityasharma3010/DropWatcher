@@ -61,8 +61,21 @@ select {
 }
 .queue-list li:hover { background: #23242f; }
 .queue-list li.selected { background: #2b2c3a; }
+.queue-list li.dragging { opacity: 0.4; }
 .queue-list li .marker { color: var(--purple); margin-right: 6px; }
 .queue-list li .mins { color: var(--text-dim); }
+.queue-list li .edit-btn { background: transparent; padding: 2px 6px; font-size: 12px; }
+.queue-list li .edit-btn:hover { background: #373844; }
+.queue-item-edit { display: flex; gap: 6px; align-items: center; width: 100%; }
+.queue-item-edit select, .queue-item-edit input { padding: 5px; font-size: 12px; }
+.queue-item-edit input[type="number"] { width: 60px; }
+.found-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; max-height: 160px; overflow-y: auto; }
+.found-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px; background: var(--card-inner); border-radius: 8px; font-size: 12px; }
+.found-item .title { color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.found-item button { padding: 4px 10px; font-size: 12px; flex-shrink: 0; }
+.history-item { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.history-item:last-child { border-bottom: none; }
+.history-item .when { color: var(--text-dim); }
 .controls { display: flex; gap: 8px; }
 .controls button { flex: 1; }
 .status-card .label { color: #a8a8b3; font-size: 11px; font-weight: 700; }
@@ -84,3 +97,19 @@ select {
 .bar-track { background: var(--card-inner); border-radius: 6px; height: 6px; overflow: hidden; }
 .bar-fill { background: var(--purple); height: 100%; border-radius: 6px; }
 .bar-fill.claimed { background: #76d49b; }
+.drops-loading { display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-size: 13px; padding: 4px 0; }
+.spinner {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid var(--border); border-top-color: var(--purple);
+  animation: spin 0.7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.settings-wrap { position: relative; }
+#settings-btn { padding: 8px 11px; font-size: 15px; }
+.settings-panel {
+  position: absolute; top: 110%; right: 0; z-index: 10;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px; min-width: 220px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.settings-panel.hidden { display: none; }
+.settings-row { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }

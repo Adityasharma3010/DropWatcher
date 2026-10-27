@@ -1,7 +1,13 @@
 let selectedIndex = -1;
 let currentPlayerChannel = null;
+let lastDropsChannel = null;
 
 function api() { return window.pywebview.api; }
+
+function showDropsLoading() {
+  const container = document.getElementById("drops-list");
+  container.innerHTML = `<div class="drops-loading"><span class="spinner"></span> Loading drop info…</div>`;
+}
 
 function fmtRemaining(seconds) {
   if (seconds === null || seconds === undefined) return "— remaining";
@@ -9,12 +15,45 @@ function fmtRemaining(seconds) {
   return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")} remaining`;
 }
 
-function renderQueue(items, activeIndex) {
+let editingIndex = -1;
+
+function renderQueue(items, activeIndex, running) {
   const list = document.getElementById("queue-list");
   list.innerHTML = "";
   items.forEach((item, i) => {
     const li = document.createElement("li");
+    li.draggable = !running;
     if (i === selectedIndex) li.classList.add("selected");
+
+    if (i === editingIndex) {
+      const editRow = document.createElement("div");
+      editRow.className = "queue-item-edit";
+      const modeSel = document.createElement("select");
+      modeSel.innerHTML = `<option value="fixed">Fixed time</option><option value="until-earned">Until drops earned</option>`;
+      modeSel.value = item.minutes > 0 ? "fixed" : "until-earned";
+      const minInput = document.createElement("input");
+      minInput.type = "number"; minInput.min = "1"; minInput.max = "1440";
+      minInput.value = item.minutes > 0 ? item.minutes : 60;
+      minInput.style.display = modeSel.value === "until-earned" ? "none" : "inline-block";
+      modeSel.addEventListener("change", () => {
+        minInput.style.display = modeSel.value === "until-earned" ? "none" : "inline-block";
+      });
+      const saveBtn = document.createElement("button");
+      saveBtn.textContent = "Save"; saveBtn.className = "primary";
+      saveBtn.addEventListener("click", async () => {
+        const minutes = modeSel.value === "until-earned" ? 0 : (parseInt(minInput.value, 10) || 60);
+        await api().edit_stream(i, minutes);
+        editingIndex = -1; refresh();
+      });
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "Cancel";
+      cancelBtn.addEventListener("click", () => { editingIndex = -1; refresh(); });
+      editRow.append(modeSel, minInput, saveBtn, cancelBtn);
+      li.appendChild(editRow);
+      list.appendChild(li);
+      return;
+    }
+
     const marker = document.createElement("span");
     marker.className = "marker";
     marker.textContent = i === activeIndex ? "●" : "○";
@@ -24,9 +63,28 @@ function renderQueue(items, activeIndex) {
     const mins = document.createElement("span");
     mins.className = "mins";
     mins.textContent = item.minutes > 0 ? `${item.minutes} min` : "until drops earned";
-    li.append(marker, name, mins);
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn"; editBtn.textContent = "✎"; editBtn.title = "Edit";
+    editBtn.addEventListener("click", (e) => { e.stopPropagation(); editingIndex = i; refresh(); });
+    li.append(marker, name, mins, editBtn);
     li.addEventListener("click", () => { selectedIndex = i; refresh(); });
     li.addEventListener("dblclick", () => { api().play_stream(i); });
+
+    li.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/plain", String(i));
+      li.classList.add("dragging");
+    });
+    li.addEventListener("dragend", () => li.classList.remove("dragging"));
+    li.addEventListener("dragover", (e) => { if (!running) e.preventDefault(); });
+    li.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+      if (!Number.isNaN(from) && from !== i) {
+        await api().reorder_stream(from, i);
+        refresh();
+      }
+    });
+
     list.appendChild(li);
   });
 }
@@ -65,7 +123,7 @@ async function refresh() {
     playerLoginBtn.disabled = false;
   }
 
-  renderQueue(status.items, status.active_index);
+  renderQueue(status.items, status.active_index, status.running);
 
   document.getElementById("now-watching").textContent =
     status.running && status.now_channel ? status.now_channel : "Queue paused";
@@ -82,6 +140,14 @@ async function refresh() {
   hint.style.display = status.player_signed_in ? "none" : "block";
 
   updatePlayer(status.player_channel);
+
+  if (status.player_channel !== lastDropsChannel) {
+    lastDropsChannel = status.player_channel;
+    if (status.player_channel) {
+      showDropsLoading();
+      refreshDrops();
+    }
+  }
 }
 
 function renderDrops(campaigns) {
@@ -151,6 +217,74 @@ async function refreshDrops() {
   } catch (e) { /* ignore transient failures */ }
 }
 
+function renderHistory(entries) {
+  const container = document.getElementById("drops-history-list");
+  container.innerHTML = "";
+  if (!entries || entries.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "drops-empty";
+    empty.textContent = "No drops earned yet.";
+    container.appendChild(empty);
+    return;
+  }
+  entries.slice(0, 50).forEach((entry) => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+    const label = document.createElement("span");
+    label.textContent = `${entry.drop_name} — ${entry.game}`;
+    const when = document.createElement("span");
+    when.className = "when";
+    when.textContent = new Date(entry.earned_at * 1000).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    row.append(label, when);
+    container.appendChild(row);
+  });
+}
+
+async function refreshHistory() {
+  try {
+    const entries = await api().get_drops_history();
+    renderHistory(entries);
+  } catch (e) { /* ignore */ }
+}
+
+async function searchDropStreams() {
+  const gameName = document.getElementById("game-search-input").value.trim();
+  const resultsEl = document.getElementById("game-search-results");
+  if (!gameName) return;
+  resultsEl.innerHTML = "<div class=\"drops-empty\">Searching…</div>";
+  const result = await api().find_drop_streams(gameName);
+  resultsEl.innerHTML = "";
+  if (result.error) {
+    const err = document.createElement("div");
+    err.className = "drops-empty"; err.style.color = "#e07a7a";
+    err.textContent = result.error;
+    resultsEl.appendChild(err);
+    return;
+  }
+  if (!result.streams || result.streams.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "drops-empty";
+    empty.textContent = `No live streams with drops enabled found for ${result.game}.`;
+    resultsEl.appendChild(empty);
+    return;
+  }
+  result.streams.forEach((stream) => {
+    const row = document.createElement("div");
+    row.className = "found-item";
+    const info = document.createElement("span");
+    info.className = "title";
+    info.textContent = `${stream.display_name} · ${stream.viewer_count} viewers`;
+    const addBtn = document.createElement("button");
+    addBtn.textContent = "+ Add";
+    addBtn.addEventListener("click", async () => {
+      await api().add_found_stream(stream.login, 0);
+      refresh();
+    });
+    row.append(info, addBtn);
+    resultsEl.appendChild(row);
+  });
+}
+
 function wire() {
   document.getElementById("link-btn").addEventListener("click", async (e) => {
     e.target.disabled = true; e.target.textContent = "Waiting for Twitch…";
@@ -196,10 +330,36 @@ function wire() {
   document.getElementById("inventory-btn").addEventListener("click", async () => {
     await api().open_inventory();
   });
+  document.getElementById("settings-btn").addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const panel = document.getElementById("settings-panel");
+    const opening = panel.classList.contains("hidden");
+    panel.classList.toggle("hidden");
+    if (opening) {
+      const current = await api().get_settings();
+      document.getElementById("minimize-tray-setting").checked = !!current.minimize_to_tray;
+    }
+  });
+  document.addEventListener("click", (e) => {
+    const panel = document.getElementById("settings-panel");
+    if (!panel.contains(e.target) && e.target.id !== "settings-btn") panel.classList.add("hidden");
+  });
+  document.getElementById("minimize-tray-setting").addEventListener("change", async (e) => {
+    await api().set_setting("minimize_to_tray", e.target.checked);
+  });
+  document.getElementById("minimize-tray-btn").addEventListener("click", async () => {
+    await api().minimize_to_tray();
+  });
+  document.getElementById("game-search-btn").addEventListener("click", searchDropStreams);
+  document.getElementById("game-search-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") searchDropStreams();
+  });
   setInterval(refresh, 1000);
   setInterval(refreshDrops, 15000);
+  setInterval(refreshHistory, 20000);
   refresh();
   refreshDrops();
+  refreshHistory();
 }
 
 window.addEventListener("pywebviewready", wire);

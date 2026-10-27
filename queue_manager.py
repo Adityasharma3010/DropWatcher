@@ -13,6 +13,21 @@ class QueueManager:
     def add(self, link, minutes): self.items.append(QueueItem(link, minutes)); self.on_update()
     def remove(self, index):
         if 0 <= index < len(self.items): self.items.pop(index); self.on_update()
+    def move(self, from_index, to_index):
+        # Reordering only while the queue is paused avoids desyncing
+        # active_index mid-run; the frontend also disables dragging then.
+        if self.running: return
+        if not (0 <= from_index < len(self.items) and 0 <= to_index < len(self.items)): return
+        item = self.items.pop(from_index)
+        self.items.insert(to_index, item)
+        self.on_update()
+    def edit(self, index, minutes):
+        if not (0 <= index < len(self.items)): return
+        self.items[index].minutes = minutes
+        if self.running and index == self.active_index:
+            no_timer = minutes <= 0
+            self.active_deadline = time.time() + (10**9 if no_timer else minutes * 60)
+        self.on_update()
     def start(self):
         if self.items and not self.running:
             self.running = True; self._stop.clear(); self._advance.clear(); threading.Thread(target=self._run, daemon=True).start()
